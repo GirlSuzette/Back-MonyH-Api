@@ -8,9 +8,9 @@ const PORT = process.env.PORT || 3000;
 
 const api = require("./src/routes/api");
 
-const RESTAPI_URI = process.env.RESTAPI;
+const RESTAPI = process.env.RESTAPI;
 
-ODM.connect(RESTAPI_URI, {
+ODM.connect(RESTAPI, {
   useNewUrlParser: true,
   useCreateIndex: true
 });
