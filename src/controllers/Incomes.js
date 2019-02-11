@@ -3,7 +3,7 @@ const ODM = require("mongoose");
 const Income = require("../models/Income");
 
 const Incomes = {
-  index: (request, response) => {
+  index: (req, res) => {
     Income
       .find()
       .populate({
@@ -12,7 +12,7 @@ const Incomes = {
       })
       .exec()
       .then(incomes => {
-        response
+        res
           .status(200)
           .json({
             meta: incomes.length,
@@ -22,22 +22,22 @@ const Incomes = {
       .catch(error => console.log(error));
   },
 
-  create: (request, response) => {
+  create: (req, res) => {
     const newIncome = new Income({
       _id: new ODM.Types.ObjectId(),
-      concept: request.body.concept,
-      quantity: request.body.quantity,
-      date: request.body.date,
-      type: request.body.type,
-      status: request.body.status,
-      user: request.body.user
+      concept: req.body.concept,
+      quantity: req.body.quantity,
+      date: req.body.date,
+      type: req.body.type,
+      status: req.body.status,
+      user: req.params.userId
     });
     console.log(newIncome)
 
     newIncome
       .save()
       .then(incomeCreated => {
-        response
+        res
           .status(200)
           .json({
             data: incomeCreated
@@ -46,14 +46,14 @@ const Incomes = {
       .catch(error => console.log(error));
   },
 
-  delete: (request, response) => {
-    const { incomesId } = request.params;
+  delete: (req, res) => {
+    const { incomesId } = req.params;
 
     Income
       .findOneAndDelete(incomesId)
       .exec()
       .then(income => {
-        response
+        res
           .status(200)
           .json({
             msg: `${income.concept} was deleted.`

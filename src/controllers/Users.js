@@ -125,7 +125,7 @@ const Users = {
       .exec()
       .then(data => {
         res.json({
-          type: 'Finding the treatment',
+          type: 'Finding the Incomes',
           data: data
         })
           .status(200)
@@ -143,7 +143,7 @@ const Users = {
       .exec()
       .then(data => {
         res.json({
-          type: 'Finding the treatment',
+          type: 'Finding the Expense',
           data: data
         })
           .status(200)
@@ -154,62 +154,84 @@ const Users = {
       })
   },
 
-
-
-  delete: (request, response) => {
-    const { userId } = request.params;
+  updateBy: (req, res) => {
+    const fullName = req.body.fullName;
+    const email = req.body.email;
+    const phoneNumber = req.body.phoneNumber;
+    const password = req.body.password;
 
     User
-      .findOneAndDelete(userId)
-      .exec()
-      .then(deleted => {
-        response
-          .status(200)
-          .json({
-            msg: `${deleted.fullName} was deleted.`
-          })
+      .findOne({ _id: req.params.userId })
+      .then(function (user) {
+        // console.log(user)
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (result) {
+            user.fullName = fullName;
+            user.email = email;
+            user.phoneNumber = phoneNumber;
+
+            user.save()
+              .then(saved => {
+                res
+                  .status(201)
+                  .json({
+                    message: "User update successfully",
+                    user: saved
+                  })
+              })
+          } else {
+            bcrypt.hash(password, 10, (err, hash) => {
+              if (err) {
+                return res.status(500)
+                  .json({
+                    message: error
+                  })
+              }
+              user.fullName = fullName;
+              user.email = email;
+              user.phoneNumber = phoneNumber;
+              user.password = hash;
+              console.log(user)
+              user.save()
+                .then(saved => {
+                  res.status(201)
+                    .json({
+                      message: "User update succeefully",
+                      user: saved
+                    });
+                })
+            });
+          }
+        });
+      }).catch(err => {
+        console.log(`caugt the error: ${err}`);
+        return res.status(404).json({ "type": "Not Found" })
       })
+
+  },
+
+  delete: (req, res) => {
+    User
+      .findById(req.params.userId, function (err, user) {
+        if (!err) {
+          Expense.deleteMany({ user: { $in: [user._id] } }, function (err) { })
+          Income.deleteMany({ user: { $in: [user._id] } }, function (err) { })
+          user
+            .remove()
+            .then(() => {
+              res.status(200)
+                .json({
+                  message: 'User was deleted'
+                })
+            })
+        }
+
+      }).catch(err => {
+        console.log(`caugth err: ${err}`);
+        return res.status(500).json({ message: 'You do not have permission' })
+      })
+
   }
 };
 
 module.exports = Users;
-
-
-
-  // create: (request, response) => {
-  //   const newUser = new User({
-  //     _id: new ODM.Types.ObjectId(),
-  //     fullName: request.body.fullName,
-  //     email: request.body.email,
-  //     number: request.body.number,
-  //     password: request.body.password,
-
-  //   });
-
-  //   console.log(newUser);
-
-  //   newUser
-  //     .save()
-  //     .then(created => {
-  //       Tweet
-  //         .findById(request.body.tweetId)
-  //         .exec()
-  //         .then(tweet => {
-
-  //           console.log(created);
-
-  //           tweet.users.push(created._id);
-  //           tweet.save();
-
-  //           // console.log(tweet)
-
-  //           response
-  //             .status(200)
-  //             .json({
-  //               data: created
-  //             });
-  //         })
-  //         .catch();
-  //     })
-  //     .catch(error => console.log(error));
-  // },

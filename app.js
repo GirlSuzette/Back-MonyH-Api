@@ -11,7 +11,8 @@ const api = require("./src/routes/api");
 const RESTAPI_URI = process.env.RESTAPI;
 
 ODM.connect(RESTAPI_URI, {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useCreateIndex: true
 });
 
 

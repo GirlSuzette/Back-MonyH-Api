@@ -3,7 +3,7 @@ const ODM = require("mongoose");
 const Expense = require("../models/Expense");
 
 const Expenses = {
-    index: (request, response) => {
+    index: (req, res) => {
         Expense
             .find()
             .populate({
@@ -12,32 +12,50 @@ const Expenses = {
             })
             .exec()
             .then(expense => {
-                response
+                res
                     .status(200)
                     .json({
                         meta: expense.length,
                         data: expense
                     });
             })
-            .catch(error => console.log(error));
+            .catch(err => {
+                console.log(`caugth err: ${err}`);
+                return res.status(500).json(err)
+            })
+    },
+    findBy: (req, res) => {
+        Treatment
+            .findById(req.params.expensesId)
+            .then(data => {
+                res.json({
+                    type: 'Found Expenses by Id',
+                    data: data
+                })
+                    .status(200)
+            })
+            .catch(err => {
+                console.log(`caugth err: ${err}`);
+                return res.status(500).json(err)
+            })
     },
 
-    create: (request, response) => {
+    create: (req, res) => {
         const newExpense = new Expense({
             _id: new ODM.Types.ObjectId(),
-            concept: request.body.concept,
-            quantity: request.body.quantity,
-            date: request.body.date,
-            type: request.body.type,
-            status: request.body.status,
-            user: request.body.user
+            concept: req.body.concept,
+            quantity: req.body.quantity,
+            date: req.body.date,
+            type: req.body.type,
+            status: req.body.status,
+            user: req.params.userId
         });
         console.log(newExpense)
 
         newExpense
             .save()
             .then(expenseCreated => {
-                response
+                res
                     .status(200)
                     .json({
                         data: expenseCreated
@@ -46,14 +64,14 @@ const Expenses = {
             .catch(error => console.log(error));
     },
 
-    delete: (request, response) => {
-        const { expenseId } = request.params;
+    delete: (req, res) => {
+        const { expenseId } = req.params;
 
         Expense
             .findOneAndDelete(expenseId)
             .exec()
             .then(expense => {
-                response
+                res
                     .status(200)
                     .json({
                         msg: `${expense.concept} was deleted.`

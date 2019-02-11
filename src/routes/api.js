@@ -9,14 +9,13 @@ const isAuthenticated = require('../../services/Auth')
 const app = Router();
 
 //Route User
-
 app.route("/users")
   .get(isAuthenticated, Users.index);
-// .post(Users.create);
 
 app.route("/users/:userId")
   .get(isAuthenticated, Users.findBy)
-  .delete(isAuthenticated, Users.delete)
+  .put(isAuthenticated, Users.updateBy)
+  .delete(isAuthenticated, Users.delete);
 //Route aute
 app.post('/auth/signup', Users.signup)
 app.post('/auth/login', Users.login)

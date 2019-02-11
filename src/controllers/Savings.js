@@ -3,7 +3,7 @@ const ODM = require("mongoose");
 const Saving = require("../models/Saving");
 
 const Savings = {
-    index: (request, response) => {
+    index: (req, res) => {
         Saving
             .find()
             .populate({
@@ -12,7 +12,7 @@ const Savings = {
             })
             .exec()
             .then(savings => {
-                response
+                res
                     .status(200)
                     .json({
                         meta: savings.length,
@@ -22,22 +22,22 @@ const Savings = {
             .catch(error => console.log(error));
     },
 
-    create: (request, response) => {
+    create: (req, res) => {
         const newSaving = new Saving({
             _id: new ODM.Types.ObjectId(),
-            concept: request.body.concept,
-            quantity: request.body.quantity,
-            date: request.body.date,
-            type: request.body.type,
-            status: request.body.status,
-            user: request.body.user
+            concept: req.body.concept,
+            quantity: req.body.quantity,
+            date: req.body.date,
+            type: req.body.type,
+            status: req.body.status,
+            user: req.params.userId
         });
         console.log(newSaving)
 
         newSaving
             .save()
             .then(savingCreated => {
-                response
+                res
                     .status(200)
                     .json({
                         data: savingCreated
@@ -46,14 +46,14 @@ const Savings = {
             .catch(error => console.log(error));
     },
 
-    delete: (request, response) => {
-        const { savingId } = request.params;
+    delete: (req, res) => {
+        const { savingId } = req.params;
 
         Saving
             .findOneAndDelete(savingId)
             .exec()
             .then(saving => {
-                response
+                res
                     .status(200)
                     .json({
                         msg: `${saving.concept} was deleted.`
