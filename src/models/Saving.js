@@ -11,7 +11,7 @@ const Schema = new ODM.Schema({
     required: true
   },
   inicio: {
-    type: Date,
+    type: String,
     required: true
   },
   duracion: {
