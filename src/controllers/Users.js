@@ -50,6 +50,8 @@ const Users = {
                     message: "User created successfully",
                     data: saved
                   })
+              }).catch(err => {
+                console.log(`error create users: ${err} `);
               })
           })
         } else {

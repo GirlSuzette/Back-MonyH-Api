@@ -10,7 +10,7 @@ const app = Router();
 
 //Route User
 app.route("/users")
-  .get(isAuthenticated, Users.index);
+  .get(Users.index);
 
 app.route("/users/:userId")
   .get(isAuthenticated, Users.findBy)
