@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const User = require("../models/User");
 const Income = require("../models/Income");
 const Expense = require("../models/Expense");
+const Saving = require("../models/Saving")
 const jwt = require('jsonwebtoken');
 
 const Users = {
@@ -146,6 +147,24 @@ const Users = {
       .then(data => {
         res.json({
           type: 'Finding the Expense',
+          data: data
+        })
+          .status(200)
+      })
+      .catch(err => {
+        console.log(`caugth err: ${err}`);
+        return res.status(500).json(err)
+      })
+  },
+
+  findsavingBy: (req, res) => {
+    Saving
+      .find({ user: req.params.userId })
+      // .populate()
+      .exec()
+      .then(data => {
+        res.json({
+          type: 'Finding the Saving',
           data: data
         })
           .status(200)

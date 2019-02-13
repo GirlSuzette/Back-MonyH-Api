@@ -27,9 +27,10 @@ const Savings = {
             _id: new ODM.Types.ObjectId(),
             concept: req.body.concept,
             quantity: req.body.quantity,
-            date: req.body.date,
-            type: req.body.type,
-            status: req.body.status,
+            savingFor: req.body.savingFor,
+            startDate: req.body.startDate,
+            duration: req.body.duration,
+            period: req.body.period,
             user: req.params.userId
         });
         console.log(newSaving)

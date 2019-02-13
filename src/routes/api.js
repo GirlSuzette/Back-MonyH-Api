@@ -3,7 +3,8 @@ const { Router } = require("express");
 const Users = require("../controllers/Users");
 const Incomes = require("../controllers/Incomes");
 const Expenses = require("../controllers/Expenses");
-const isAuthenticated = require('../../services/Auth')
+const Savings = require('../controllers/Savings')
+const isAuthenticated = require('../../services/Auth');
 
 
 const app = Router();
@@ -32,7 +33,11 @@ app.route("/users/:userId/expenses")
   .post(Expenses.create)
   .get(Users.findexpenseBy);
 
-
+//Router Saving
+app.get('/saving', Expenses.index)
+app.route("/users/:userId/saving")
+  .post(Savings.create)
+  .get(Users.findsavingBy);
 
 
 module.exports = app;

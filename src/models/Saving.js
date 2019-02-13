@@ -6,19 +6,23 @@ const Schema = new ODM.Schema({
     type: String,
     required: true
   },
-  ahorro: {
+  quantity: {
     type: Number,
     required: true
   },
-  inicio: {
+  savingFor: {
     type: String,
     required: true
   },
-  duracion: {
+  startDate: {
     type: String,
     required: true
   },
-  periodo: {
+  duration: {
+    type: Number,
+    required: true
+  },
+  period: {
     type: String,
     required: true
   },
