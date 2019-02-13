@@ -25,8 +25,8 @@ const Expenses = {
             })
     },
     findBy: (req, res) => {
-        Treatment
-            .findById(req.params.expensesId)
+        Expense
+            .findById(req.params.expenseId)
             .then(data => {
                 res.json({
                     type: 'Found Expenses by Id',

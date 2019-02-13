@@ -46,10 +46,24 @@ const Savings = {
             })
             .catch(error => console.log(error));
     },
+    findBy: (req, res) => {
+        Saving
+            .findById(req.params.savingId)
+            .then(data => {
+                res.json({
+                    type: 'Found Expenses by Id',
+                    data: data
+                })
+                    .status(200)
+            })
+            .catch(err => {
+                console.log(`caugth err: ${err}`);
+                return res.status(500).json(err)
+            })
+    },
 
     delete: (req, res) => {
         const { savingId } = req.params;
-
         Saving
             .findOneAndDelete(savingId)
             .exec()

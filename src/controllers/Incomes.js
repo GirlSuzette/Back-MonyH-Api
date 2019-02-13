@@ -21,6 +21,21 @@ const Incomes = {
       })
       .catch(error => console.log(error));
   },
+  findBy: (req, res) => {
+    Income
+      .findById(req.params.incomeId)
+      .then(data => {
+        res.json({
+          type: 'Found Expenses by Id',
+          data: data
+        })
+          .status(200)
+      })
+      .catch(err => {
+        console.log(`caugth err: ${err}`);
+        return res.status(500).json(err)
+      })
+  },
 
   create: (req, res) => {
     const newIncome = new Income({
@@ -47,16 +62,16 @@ const Incomes = {
   },
 
   delete: (req, res) => {
-    const { incomesId } = req.params;
+    const { incomeId } = req.params;
 
     Income
-      .findOneAndDelete(incomesId)
+      .findOneAndDelete(incomeId)
       .exec()
-      .then(income => {
+      .then(expense => {
         res
           .status(200)
           .json({
-            msg: `${income.concept} was deleted.`
+            msg: `${expense.concept} was deleted.`
           });
       })
       .catch(error => console.log(error));
