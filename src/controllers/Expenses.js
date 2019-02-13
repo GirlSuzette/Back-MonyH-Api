@@ -1,6 +1,8 @@
 const ODM = require("mongoose");
 
 const Expense = require("../models/Expense");
+const Reminder = require('../models/Reminder');
+
 
 const Expenses = {
     index: (req, res) => {
@@ -63,7 +65,47 @@ const Expenses = {
             })
             .catch(error => console.log(error));
     },
-
+    findreminderBy: (req, res) => {
+        Reminder
+            .find({ user: req.params.expenseId })
+            .populate({
+                path: "Expense",
+                select: "concept"
+            })
+            .exec()
+            .then(data => {
+                res.json({
+                    type: 'Finding the Reminder',
+                    data: data
+                })
+                    .status(200)
+            })
+            .catch(err => {
+                console.log(`caugth err: ${err}`);
+                return res.status(500).json(err)
+            })
+    },
+    updateBy: (req, res) => {
+        Expense
+            .updateOne({ _id: req.params.expenseId }, {
+                concept: req.body.concept,
+                quantity: req.body.quantity,
+                date: req.body.date,
+                type: req.body.type,
+                status: req.body.status,
+            })
+            .then(data => {
+                res.json({
+                    type: 'Update Expenses',
+                    data: data
+                })
+                    .status(200)
+            })
+            .catch(err => {
+                console.log(`caugth err: ${err}`);
+                return res.status(500).json(err)
+            })
+    },
     delete: (req, res) => {
         const { expenseId } = req.params;
 

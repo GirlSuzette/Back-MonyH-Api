@@ -1,9 +1,9 @@
 const ODM = require("mongoose");
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const User = require("../models/User");
 const Income = require("../models/Income");
 const Expense = require("../models/Expense");
-const Saving = require("../models/Saving")
+const Saving = require("../models/Saving");
 const jwt = require('jsonwebtoken');
 
 const Users = {
@@ -174,6 +174,8 @@ const Users = {
         return res.status(500).json(err)
       })
   },
+
+
 
   updateBy: (req, res) => {
     const fullName = req.body.fullName;

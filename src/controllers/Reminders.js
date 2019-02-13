@@ -1,57 +1,55 @@
 const ODM = require("mongoose");
 
-const Saving = require("../models/Saving");
+const Reminder = require("../models/Reminder");
 
-const Savings = {
+const Reminders = {
     index: (req, res) => {
-        Saving
+        Reminder
             .find()
             .populate({
                 path: "user",
                 select: "_id fullName"
             })
             .exec()
-            .then(savings => {
+            .then(reminders => {
                 res
                     .status(200)
                     .json({
-                        meta: savings.length,
-                        data: Savings
+                        meta: reminders.length,
+                        data: reminders
                     });
             })
             .catch(error => console.log(error));
     },
 
     create: (req, res) => {
-        const newSaving = new Saving({
+        const newReminder = new Reminder({
             _id: new ODM.Types.ObjectId(),
             concept: req.body.concept,
+            date: req.body.date,
             quantity: req.body.quantity,
-            savingFor: req.body.savingFor,
-            startDate: req.body.startDate,
-            duration: req.body.duration,
-            period: req.body.period,
-            user: req.params.userId
+            user: req.params.userId,
+            expense: req.params.userId
         });
-        console.log(newSaving)
+        console.log(newReminder)
 
-        newSaving
+        newReminder
             .save()
-            .then(savingCreated => {
+            .then(reminderCreated => {
                 res
                     .status(200)
                     .json({
-                        data: savingCreated
+                        data: reminderCreated
                     });
             })
             .catch(error => console.log(error));
     },
     findBy: (req, res) => {
-        Saving
-            .findById(req.params.savingId)
+        Reminder
+            .findById(req.params.reminderId)
             .then(data => {
                 res.json({
-                    type: 'Found Expenses by Id',
+                    type: 'Found Reminder by Id',
                     data: data
                 })
                     .status(200)
@@ -62,18 +60,15 @@ const Savings = {
             })
     },
     updateBy: (req, res) => {
-        Saving
-            .updateOne({ _id: req.params.savingId }, {
+        Reminder
+            .updateOne({ _id: req.params.reminderId }, {
                 concept: req.body.concept,
+                date: req.body.date,
                 quantity: req.body.quantity,
-                savingFor: req.body.savingFor,
-                startDate: req.body.startDate,
-                duration: req.body.duration,
-                period: req.body.period,
             })
             .then(data => {
                 res.json({
-                    type: 'Update Saving',
+                    type: 'Update Reminders',
                     data: data
                 })
                     .status(200)
@@ -84,16 +79,17 @@ const Savings = {
             })
     },
 
+
     delete: (req, res) => {
-        const { savingId } = req.params;
-        Saving
-            .findOneAndDelete(savingId)
+        const { reminderId } = req.params;
+        Reminder
+            .findOneAndDelete(reminderId)
             .exec()
-            .then(saving => {
+            .then(reminder => {
                 res
                     .status(200)
                     .json({
-                        msg: `${saving.concept} was deleted.`
+                        msg: `${reminder.concept} was deleted.`
                     });
             })
             .catch(error => console.log(error));
@@ -101,4 +97,4 @@ const Savings = {
 
 }
 
-module.exports = Savings
+module.exports = Reminders
