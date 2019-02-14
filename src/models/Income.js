@@ -18,10 +18,6 @@ const Schema = new ODM.Schema({
     type: String,
     required: true
   },
-  status: {
-    type: String,
-    required: true
-  },
 
   user: {
     type: ODM.Schema.Types.ObjectId,

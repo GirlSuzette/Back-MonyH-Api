@@ -44,7 +44,6 @@ const Incomes = {
       quantity: req.body.quantity,
       date: req.body.date,
       type: req.body.type,
-      status: req.body.status,
       user: req.params.userId
     });
     console.log(newIncome)
@@ -67,7 +66,6 @@ const Incomes = {
         quantity: req.body.quantity,
         date: req.body.date,
         type: req.body.type,
-        status: req.body.status,
       })
       .then(data => {
         res.json({
