@@ -21,9 +21,7 @@ const Reminders = {
   create: (req, res) => {
     const newReminder = new Reminder({
       _id: new ODM.Types.ObjectId(),
-      concept: req.body.concept,
       date: req.body.date,
-      quantity: req.body.quantity,
       user: req.params.userId,
       expense: req.params.userId
     })
