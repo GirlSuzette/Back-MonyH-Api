@@ -11,11 +11,6 @@ const Schema = new ODM.Schema(
       type: String,
       required: true
     },
-    quantity: {
-      type: Number,
-      required: true
-    },
-
     user: {
       type: ODM.Schema.Types.ObjectId,
       ref: 'User'
