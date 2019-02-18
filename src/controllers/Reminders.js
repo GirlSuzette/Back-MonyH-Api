@@ -31,6 +31,7 @@ const Reminders = {
       .save()
       .then(reminderCreated => {
         res.status(200).json({
+          message: 'Reminder created successfully',
           data: reminderCreated
         })
       })
