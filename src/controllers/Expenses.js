@@ -52,7 +52,7 @@ const Expenses = {
 
     const dateYM = `${newdate[0]}-${newdate[1]}`
 
-    Balance.find({ period: dateYM, _id: user }).then(function (dateBalance) {
+    Balance.find({ period: dateYM, user: user }).then(function (dateBalance) {
       if (dateBalance.length > 0) {
         newBalanceId = dateBalance[0]._id
 
