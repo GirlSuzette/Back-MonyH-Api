@@ -22,6 +22,10 @@ const Schema = new ODM.Schema(
     user: {
       type: ODM.Schema.Types.ObjectId,
       ref: 'User'
+    },
+    balance: {
+      type: ODM.Schema.Types.ObjectId,
+      ref: 'Balance'
     }
   },
   { timestamps: true }

@@ -1,6 +1,7 @@
 const ODM = require('mongoose')
 
 const Income = require('../models/Income')
+const Balance = require('../models/Balance')
 
 const Incomes = {
   index: (req, res) => {
@@ -35,26 +36,70 @@ const Incomes = {
   },
 
   create: (req, res) => {
-    const newIncome = new Income({
-      _id: new ODM.Types.ObjectId(),
-      concept: req.body.concept,
-      quantity: req.body.quantity,
-      date: req.body.date,
-      type: req.body.type,
-      user: req.params.userId
-    })
-    console.log(newIncome)
+    const concept = req.body.concept
+    const quantity = req.body.quantity
+    const date = req.body.date
+    const type = req.body.type
+    const user = req.params.userId
+    let newBalanceId = ''
 
-    newIncome
-      .save()
-      .then(incomeCreated => {
-        res.status(200).json({
-          message: 'Incomes created successfully',
-          data: incomeCreated
+    const newdate = date.split('-')
+
+    const dateYM = `${newdate[0]}-${newdate[1]}`
+
+    Balance.find({ period: dateYM }).then(function (dateBalan) {
+      if (dateBalan.length > 0) {
+        newBalanceId = dateBalan[0]._id
+        // console.log(newBalanceId)
+
+        let sumBalance = dateBalan[0].balance + parseInt(quantity)
+        let sumIncomes = dateBalan[0].incomes + parseInt(quantity)
+        // console.log(typeof sumBalance, sumBalance)
+        // console.log(typeof sumIncomes, sumIncomes)
+        Balance.findOne({
+          _id: dateBalan[0]._id
+        }).then(balance => {
+          // console.log(`Estes es el balance ${balance}`)
+          balance.balance = sumBalance
+          balance.incomes = sumIncomes
+          balance.save()
         })
+
+        console.log(dateBalan[0])
+      } else {
+        const newBalance = new Balance({
+          _id: new ODM.Types.ObjectId(),
+          balance: quantity,
+          expenses: 0,
+          incomes: quantity,
+          period: dateYM
+        })
+        newBalance.save()
+        newBalanceId = newBalance._id
+      }
+      // console.log(newBalanceId)
+      const newIncome = new Income({
+        _id: new ODM.Types.ObjectId(),
+        concept: concept,
+        quantity: quantity,
+        date: date,
+        type: type,
+        user: req.params.userId,
+        balance: newBalanceId
       })
-      .catch(error => console.log(error))
+      console.log(newIncome)
+      newIncome
+        .save()
+        .then(incomeCreated => {
+          res.status(200).json({
+            message: 'Incomes created successfully',
+            data: incomeCreated
+          })
+        })
+        .catch(error => console.log(error))
+    })
   },
+
   updateBy: (req, res) => {
     Income.updateOne(
       { _id: req.params.incomeId },

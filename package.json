@@ -21,6 +21,7 @@
     "fs": "0.0.1-security",
     "heroku": "^7.21.0",
     "jsonwebtoken": "^8.4.0",
+    "moment": "^2.24.0",
     "mongoose": "^5.4.8",
     "morgan": "^1.9.1",
     "nexmo": "^2.4.1",
