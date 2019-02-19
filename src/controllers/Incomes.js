@@ -47,19 +47,18 @@ const Incomes = {
 
     const dateYM = `${newdate[0]}-${newdate[1]}`
 
-    Balance.find({ period: dateYM }).then(function (dateBalan) {
+    Balance.find({ period: dateYM, user: user }).then(function (dateBalan) {
       if (dateBalan.length > 0) {
+        console.log(`Actualiza: ${dateBalan[0]}`)
         newBalanceId = dateBalan[0]._id
-        // console.log(newBalanceId)
+        console.log(newBalanceId)
 
         let sumBalance = dateBalan[0].balance + parseInt(quantity)
         let sumIncomes = dateBalan[0].incomes + parseInt(quantity)
-        // console.log(typeof sumBalance, sumBalance)
-        // console.log(typeof sumIncomes, sumIncomes)
+
         Balance.findOne({
           _id: dateBalan[0]._id
         }).then(balance => {
-          // console.log(`Estes es el balance ${balance}`)
           balance.balance = sumBalance
           balance.incomes = sumIncomes
           balance.save()
@@ -67,17 +66,19 @@ const Incomes = {
 
         console.log(dateBalan[0])
       } else {
+        console.log(`Crea: ${dateBalan}`)
         const newBalance = new Balance({
           _id: new ODM.Types.ObjectId(),
           balance: quantity,
           expenses: 0,
           incomes: quantity,
-          period: dateYM
+          period: dateYM,
+          user: user
         })
         newBalance.save()
         newBalanceId = newBalance._id
       }
-      // console.log(newBalanceId)
+      console.log(newBalanceId)
       const newIncome = new Income({
         _id: new ODM.Types.ObjectId(),
         concept: concept,
@@ -124,17 +125,34 @@ const Incomes = {
       })
   },
 
-  delete: (req, res) => {
-    const { incomeId } = req.params
+  //   delete: (req, res) => {
+  //     const { incomeId } = req.params
 
-    Income.findOneAndDelete(incomeId)
-      .exec()
-      .then(expense => {
-        res.status(200).json({
-          msg: `${expense.concept} was deleted.`
+  //     Income.findOneAndDelete(incomeId)
+  //       .exec()
+  //       .then(expense => {
+  //         res.status(200).json({
+  //           msg: `${expense.concept} was deleted.`
+  //         })
+  //       })
+  //       .catch(error => console.log(error))
+  //   }
+  // }
+
+  delete: (req, res) => {
+    Income.findById(req.params.incomeId, function (err, income) {
+      if (!err) {
+        // Balance.deleteMany({ income: { $in: [income._id] } }, function (err) { })
+        user.remove().then(() => {
+          res.status(200).json({
+            message: 'Income was deleted'
+          })
         })
-      })
-      .catch(error => console.log(error))
+      }
+    }).catch(err => {
+      console.log(`caugth err: ${err}`)
+      return res.status(500).json({ message: 'You do not have permission' })
+    })
   }
 }
 
