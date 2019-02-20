@@ -37,15 +37,25 @@ const Reminders = {
           data: reminderCreated
         })
 
-        var date = new Date(2019, 1, 19, 22, 43, 0)
-        console.log(reminderCreated.date)
+        date = reminderCreated.date
+        const d = date.replace(/T/g, '-')
+        const y = d.split('-')
+        const newDate = y[0] + ', ' + y[1] + ', ' + y[2]
+        const horas = y[3].replace(/:/g, '-')
+        const h = horas.split('-')
+        const formaDate = newDate + h[0] + ', ' + h[1] + 0
+
+        console.log(formaDate)
+        var formate = new Date(formaDate)
+
+        // var date = new Date(2019, 1, 19, 22, 43, 0)
 
         const nexmo = new Nexmo({
           apiKey: '8dd0cb56',
           apiSecret: 'QFFiJGi80cQH9cXc'
         })
-        var j = schedule.scheduleJob(date, function (reminderCreated) {
-          console.log('enrr')
+        var j = schedule.scheduleJob(formate, function (reminderCreated) {
+          console.log('entr')
           nexmo.message.sendSms(
             '522282220235',
             '525610591995',
@@ -59,21 +69,21 @@ const Reminders = {
             }
           )
         })
-        var k = schedule.scheduleJob(date, function () {
-          console.log('enrr')
-          nexmo.message.sendSms(
-            '522282220235',
-            '522282220235',
-            'hoy te toca el pago ' + reminderCreated.concept,
-            (err, responseData) => {
-              if (err) {
-                console.log(err)
-              } else {
-                console.dir(responseData)
-              }
-            }
-          )
-        })
+        // var k = schedule.scheduleJob(date, function () {
+        //   console.log('enrr')
+        //   nexmo.message.sendSms(
+        //     '522282220235',
+        //     '522282220235',
+        //     'hoy te toca el pago ' + reminderCreated.concept,
+        //     (err, responseData) => {
+        //       if (err) {
+        //         console.log(err)
+        //       } else {
+        //         console.dir(responseData)
+        //       }
+        //     }
+        //   )
+        // })
       })
       .catch(error => console.log(error))
   },
