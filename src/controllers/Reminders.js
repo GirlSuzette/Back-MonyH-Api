@@ -1,6 +1,8 @@
 const ODM = require('mongoose')
 
 const Reminder = require('../models/Reminder')
+const schedule = require('node-schedule')
+const Nexmo = require('nexmo')
 
 const Reminders = {
   index: (req, res) => {
@@ -33,6 +35,44 @@ const Reminders = {
         res.status(200).json({
           message: 'Reminder created successfully',
           data: reminderCreated
+        })
+
+        var date = new Date(2019, 1, 19, 22, 43, 0)
+        console.log(reminderCreated.date)
+
+        const nexmo = new Nexmo({
+          apiKey: '8dd0cb56',
+          apiSecret: 'QFFiJGi80cQH9cXc'
+        })
+        var j = schedule.scheduleJob(date, function (reminderCreated) {
+          console.log('enrr')
+          nexmo.message.sendSms(
+            '522282220235',
+            '525610591995',
+            'hoy te toca el pago ' + reminderCreated.concept,
+            (err, responseData) => {
+              if (err) {
+                console.log(err)
+              } else {
+                console.dir(responseData)
+              }
+            }
+          )
+        })
+        var k = schedule.scheduleJob(date, function () {
+          console.log('enrr')
+          nexmo.message.sendSms(
+            '522282220235',
+            '522282220235',
+            'hoy te toca el pago ' + reminderCreated.concept,
+            (err, responseData) => {
+              if (err) {
+                console.log(err)
+              } else {
+                console.dir(responseData)
+              }
+            }
+          )
         })
       })
       .catch(error => console.log(error))
