@@ -23,6 +23,7 @@ const Reminders = {
   create: (req, res) => {
     const newReminder = new Reminder({
       _id: new ODM.Types.ObjectId(),
+      concept: req.body.concept,
       date: req.body.date,
       user: req.params.userId,
       expense: req.params.userId
@@ -54,26 +55,11 @@ const Reminders = {
           apiKey: '8dd0cb56',
           apiSecret: 'QFFiJGi80cQH9cXc'
         })
-        var j = schedule.scheduleJob(formate, function (reminderCreated) {
-          console.log('entr')
-          nexmo.message.sendSms(
-            '522282220235',
-            '525610591995',
-            'hoy te toca el pago ' + reminderCreated.concept,
-            (err, responseData) => {
-              if (err) {
-                console.log(err)
-              } else {
-                console.dir(responseData)
-              }
-            }
-          )
-        })
-        // var k = schedule.scheduleJob(date, function () {
-        //   console.log('enrr')
+        // var j = schedule.scheduleJob(formate, function (reminderCreated) {
+        //   console.log('entr')
         //   nexmo.message.sendSms(
         //     '522282220235',
-        //     '522282220235',
+        //     '525610591995',
         //     'hoy te toca el pago ' + reminderCreated.concept,
         //     (err, responseData) => {
         //       if (err) {
@@ -84,6 +70,21 @@ const Reminders = {
         //     }
         //   )
         // })
+        var k = schedule.scheduleJob(date, function () {
+          console.log('enrr')
+          nexmo.message.sendSms(
+            '522282220235',
+            '522282220235',
+            'Hoy te toca el pago ' + reminderCreated.concept,
+            (err, responseData) => {
+              if (err) {
+                console.log(err)
+              } else {
+                console.dir(responseData)
+              }
+            }
+          )
+        })
       })
       .catch(error => console.log(error))
   },
