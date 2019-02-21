@@ -1,6 +1,7 @@
 const schedule = require('node-schedule')
-// const Reminders = require('../controllers/Reminders')
 const Reminder = require('../models/Reminder')
+const getDate = require('./getDate')
+const sendSms = require('./SmsNexmo')
 
 var CronJob = schedule.scheduleJob('*/1 * * * *', function () {
   Reminder.find()
@@ -10,13 +11,22 @@ var CronJob = schedule.scheduleJob('*/1 * * * *', function () {
     })
     .exec()
     .then(reminders => {
-      console.log(reminders)
+      //   console.log(reminders)
       const date = new Date()
-      let dateString = date.toString()
-      console.log(dateString)
-      console.log(
-        `${dateString.split('T')[0]}T${date.getHours()}:${date.getMinutes()}`
-      )
+
+      const hour = `${date.getHours()}:${date.getMinutes()}`
+      const completeDate = `${getDate()}T${hour}`
+      console.log(completeDate)
+
+      const found = reminders.filter(reminder => reminder.date === completeDate)
+
+      console.log(found)
+      if (found.length > 0) {
+        console.log('it works')
+        sendSms()
+      } else {
+        console.log('Dates dont match ')
+      }
     })
     .catch(error => console.log(error))
 })

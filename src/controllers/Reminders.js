@@ -37,43 +37,6 @@ const Reminders = {
           data: reminderCreated
         })
         .catch(error => console.log(error))
-
-      // if (res.status(200)) {
-      //   date = reminderCreated.date
-      //   const d = date.replace(/T/g, '-')
-      //   const y = d.split('-')
-      //   const r = y[1] - 1
-      //   const newDate = y[0] + ', ' + r + ', ' + y[2] + ', '
-      //   const horas = y[3].replace(/:/g, '-')
-      //   const h = horas.split('-')
-      //   const formaDate = newDate + h[0] + ', ' + h[1] + ', ' + 0
-
-      //   console.log(formaDate)
-      //   var formate = new Date(formaDate)
-
-      //   // var date = new Date(2019, 1, 19, 22, 43, 0)
-      //   console.log(`Aquientra esta madre ${Date.now()}`)
-      //   const nexmo = new Nexmo({
-      //     apiKey: '00eabd5f',
-      //     apiSecret: 'CpLhv8kQK6zDqg8M'
-      //   })
-
-      //   var k = schedule.scheduleJob(formate, function (reminderCreated) {
-      //     console.log('enrr')
-      //     nexmo.message.sendSms(
-      //       '525610591995',
-      //       '522282220235',
-      //       'Hoy te toca el pago ' + reminderCreated.concept,
-      //       (err, responseData) => {
-      //         if (err) {
-      //           console.log(err)
-      //         } else {
-      //           console.dir(responseData)
-      //         }
-      //       }
-      //     )
-      //   })
-      // }
     })
   },
   findBy: (req, res) => {
