@@ -29,15 +29,15 @@ const Reminders = {
     })
     console.log(newReminder)
 
-    newReminder.save().then(reminderCreated => {
-      res
-        .status(200)
-        .json({
+    newReminder
+      .save()
+      .then(reminderCreated => {
+        res.status(200).json({
           message: 'Reminder created successfully',
           data: reminderCreated
         })
-        .catch(error => console.log(error))
-    })
+      })
+      .catch(error => console.log(error))
   },
   findBy: (req, res) => {
     Reminder.findById(req.params.reminderId)
