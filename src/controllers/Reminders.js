@@ -45,7 +45,7 @@ const Reminders = {
       const h = horas.split('-')
       const formaDate = newDate + h[0] + ', ' + h[1] + ', ' + 0
 
-      // console.log(formaDate)
+      console.log(formaDate)
       var formate = new Date(formaDate)
 
       // var date = new Date(2019, 1, 19, 22, 43, 0)
