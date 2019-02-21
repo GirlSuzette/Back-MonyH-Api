@@ -1,59 +1,61 @@
-require("dotenv").config();
+require('dotenv').config()
 
-const express = require("express");
-const logger = require('morgan');
-const cors = require("cors");
-const ODM = require("mongoose");
-const PORT = process.env.PORT || 3000;
+const express = require('express')
+const logger = require('morgan')
+const cors = require('cors')
+const ODM = require('mongoose')
+const PORT = process.env.PORT || 3000
 
-const api = require("./src/routes/api");
+const api = require('./src/routes/api')
 
-const RESTAPI = process.env.RESTAPI;
+const RESTAPI = process.env.RESTAPI
 
-ODM.connect(RESTAPI, {
-  useNewUrlParser: true,
-  useCreateIndex: true
-});
+ODM.connect(
+  RESTAPI,
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true
+  }
+)
 
-
-ODM.connection.on("connected", () => {
+ODM.connection.on('connected', () => {
   const msg = {
     success: true
-  };
+  }
 
-  console.log(JSON.stringify(msg, null, 2));
-});
+  console.log(JSON.stringify(msg, null, 2))
+})
 
-const app = express();
+const app = express()
 
-app.use(logger("dev"));
-app.use(cors());
-app.use(express.json());
+app.use(logger('dev'))
+app.use(cors())
+app.use(express.json())
 
-app.use("/api/v1", api);
+app.use('/api/v1', api)
 
-//error 404
+// error 404
 app.use((request, response) => {
   const ERROR = {
     message: '404. Not Found'
   }
-  response
-    .status(404)
-    .json(ERROR);
-});
+  response.status(404).json(ERROR)
+})
 
-//error 500
+// error 500
 app.use((err, request, response, next) => {
   const ERROR = {
     message: '500. Server Error'
   }
-  response
-    .status(500)
-    .json(ERROR);
-});
+  response.status(500).json(ERROR)
+})
 
-//server listening
+// Cron Job
+
+const CronJob = require('./src/utils/CronJob')
+
+// server listening
 
 app.listen(PORT, () => {
-  console.log(`REST API listening on PORT: ${PORT}`);
-});
+  console.log(`REST API listening on PORT: ${PORT}`)
+})
