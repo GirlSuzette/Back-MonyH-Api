@@ -6,8 +6,8 @@ const sendSms = require('./SmsNexmo')
 var CronJob = schedule.scheduleJob('*/1 * * * *', function () {
   Reminder.find()
     .populate({
-      path: 'user',
-      select: 'phoneNumber'
+      path: 'expense',
+      select: 'concept'
     })
     .exec()
     .then(reminders => {
@@ -24,7 +24,7 @@ var CronJob = schedule.scheduleJob('*/1 * * * *', function () {
       console.log(found)
       if (found.length > 0) {
         console.log('it works')
-        sendSms()
+        sendSms(found[0].expense.concept)
       } else {
         console.log('Dates dont match ')
       }
