@@ -11,10 +11,12 @@ var CronJob = schedule.scheduleJob('*/1 * * * *', function () {
     .exec()
     .then(reminders => {
       console.log(reminders)
-      console.log(new Date())
-      res.status(200).json({
-        data: reminders
-      })
+      const date = new Date()
+      let dateString = date.toString()
+      console.log(dateString)
+      console.log(
+        `${dateString.split('T')[0]}T${date.getHours()}:${date.getMinutes()}`
+      )
     })
     .catch(error => console.log(error))
 })

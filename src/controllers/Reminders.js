@@ -1,8 +1,7 @@
 const ODM = require('mongoose')
 
 const Reminder = require('../models/Reminder')
-const schedule = require('node-schedule')
-const Nexmo = require('nexmo')
+// const Nexmo = require('nexmo')
 
 const Reminders = {
   index: (req, res) => {
