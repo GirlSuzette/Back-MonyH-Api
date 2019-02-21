@@ -49,13 +49,13 @@ const Reminders = {
       var formate = new Date(formaDate)
 
       // var date = new Date(2019, 1, 19, 22, 43, 0)
-
+      console.log(`Aquientra esta madre ${Date.now()}`)
       const nexmo = new Nexmo({
-        apiKey: process.env.APIKEY,
-        apiSecret: process.env.APISECRET
+        apiKey: '00eabd5f',
+        apiSecret: 'CpLhv8kQK6zDqg8M'
       })
 
-      var k = schedule.scheduleJob(formate, function () {
+      var k = schedule.scheduleJob(formate, function (reminderCreated) {
         console.log('enrr')
         nexmo.message.sendSms(
           '525610591995',
