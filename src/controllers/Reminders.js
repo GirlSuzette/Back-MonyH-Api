@@ -47,17 +47,17 @@ const Reminders = {
         const h = horas.split('-')
         const formaDate = newDate + h[0] + ', ' + h[1] + ', ' + 0
 
-        console.log(formaDate)
+        // console.log(formaDate)
         var formate = new Date(formaDate)
 
-        var date = new Date(2019, 1, 19, 22, 43, 0)
+        // var date = new Date(2019, 1, 19, 22, 43, 0)
 
         const nexmo = new Nexmo({
           apiKey: process.env.APIKEY,
           apiSecret: process.env.APISECRET
         })
 
-        var k = schedule.scheduleJob(formaDate, function () {
+        var k = schedule.scheduleJob(formate, function () {
           console.log('enrr')
           nexmo.message.sendSms(
             '522282220235',
