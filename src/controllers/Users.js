@@ -192,8 +192,8 @@ const Users = {
   updateBy: (req, res) => {
     const fullName = req.body.fullName
     const email = req.body.email
-    const phoneNumber = req.body.phoneNumber
     const password = req.body.password
+    const phoneNumber = req.body.phoneNumber
 
     User.findOne({ _id: req.params.userId })
       .then(function (user) {
@@ -206,7 +206,7 @@ const Users = {
 
             user.save().then(saved => {
               res.status(201).json({
-                message: 'User update successfully',
+                message: 'user update successfully',
                 user: saved
               })
             })
@@ -224,7 +224,7 @@ const Users = {
               console.log(user)
               user.save().then(saved => {
                 res.status(201).json({
-                  message: 'User update succeefully',
+                  message: 'user update succeefully',
                   user: saved
                 })
               })
@@ -237,6 +237,55 @@ const Users = {
         return res.status(404).json({ type: 'Not Found' })
       })
   },
+
+  // updateBy: (req, res) => {
+  //   const fullName = req.body.fullName
+  //   const email = req.body.email
+  //   const phoneNumber = req.body.phoneNumber
+  //   const password = req.body.password
+
+  //   User.findOne({ _id: req.params.userId })
+  //     .then(function (user) {
+  //       // console.log(user)
+  //       bcrypt.compare(password, user.password, (err, result) => {
+  //         if (result) {
+  //           user.fullName = fullName
+  //           user.email = email
+  //           user.phoneNumber = phoneNumber
+
+  //           user.save().then(saved => {
+  //             res.status(201).json({
+  //               message: 'User update successfully',
+  //               user: saved
+  //             })
+  //           })
+  //         } else {
+  //           bcrypt.hash(password, 10, (err, hash) => {
+  //             if (err) {
+  //               return res.status(500).json({
+  //                 message: error
+  //               })
+  //             }
+  //             user.fullName = fullName
+  //             user.email = email
+  //             user.phoneNumber = phoneNumber
+  //             user.password = hash
+  //             console.log(user)
+  //             user.save().then(saved => {
+  //               res.status(201).json({
+  //                 message: 'User update succeefully',
+  //                 user: saved
+  //               })
+  //             })
+  //           })
+  //         }
+  //       })
+  //     })
+  //     .catch(err => {
+  //       console.log(`caugt the error: ${err}`)
+  //       return res.status(404).json({ type: 'Not Found' })
+  //     })
+  // },
 
   delete: (req, res) => {
     User.findById(req.params.userId, function (err, user) {
