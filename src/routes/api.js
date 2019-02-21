@@ -16,7 +16,7 @@ app.route('/users').get(Users.index)
 app
   .route('/users/:userId')
   .get(isAuthenticated, Users.findBy)
-  .put(isAuthenticated, Users.updateBy)
+  .put(Users.updateBy)
   .delete(isAuthenticated, Users.delete)
 // Route aute
 app.post('/auth/signup', Users.signup)
