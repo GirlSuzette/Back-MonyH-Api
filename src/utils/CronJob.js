@@ -16,6 +16,7 @@ var CronJob = schedule.scheduleJob('*/1 * * * *', function () {
 
       const hour = `${date.getHours()}:${date.getMinutes()}`
       const completeDate = `${getDate()}T${hour}`
+
       console.log(completeDate)
 
       const found = reminders.filter(reminder => reminder.date === completeDate)
