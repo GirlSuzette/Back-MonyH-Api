@@ -7,7 +7,7 @@ const sendSms = fullName => {
   })
 
   const from = 'Nexmo'
-  const to = '525610591995'
+  const to = '5215610591995'
   const text = `Hola ${fullName}, recuerda pagar el Gasto de la Renta`
 
   nexmo.message.sendSms(from, to, text)
